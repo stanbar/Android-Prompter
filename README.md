@@ -21,6 +21,7 @@ Prompter.with(etPage)
         .validate("Please enter page in range of [1, ${book.size}]"){ it.toInt() in 1..book.size }
 ```
 
+
 By default empty values won't pass validation process but you can change this with `.allowEmpty()`
                 
 You can even customize whole callback method (callbacks are called only when validation pass or is not specified)
@@ -49,3 +50,20 @@ Prompter.with(etDouble)
 will print 
 `D/Prompter: C`
 
+
+Usage:
+Step 1. Add the JitPack repository to your root build.gradle
+```gradle
+allprojects {
+        repositories {
+                ...
+                maven { url 'https://jitpack.io' }
+        }
+}
+```
+Step 2. Add the dependency
+```gradle
+dependencies {
+        compile 'com.github.User:Repo:Tag'
+}
+```
