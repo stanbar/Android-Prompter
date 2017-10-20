@@ -18,21 +18,33 @@ package com.stasbar.prompter
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.text.InputType
 import kotlinx.android.synthetic.main.activity_main.*
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
-
+    class Book(var size: Int = 100, var currentPosition : Int = 10)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Prompter.with(etString)
-                .message("Enter new String")
-                .addOnValueChangeListener { Log.d("newValue", it) }
+        Prompter.with(etPage)
 
-        Prompter.with(etInt)
-        Prompter.with(etDouble)
+
+        val book = Book()
+        Prompter.with(tvPage)
+                .title("Jump to page")
+                .message("Enter page number")
+                .inputType(InputType.TYPE_CLASS_NUMBER)
+                .hintMode() //Current value will be displayed as hint
+                .validate("Please enter page in range of [1, ${book.size}]"){ it.toInt() in 1..book.size }
+
+
+
+
+
+    }
+
+    companion object {
+        const val TAG = "Prompter"
     }
 }

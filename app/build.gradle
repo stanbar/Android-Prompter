@@ -15,9 +15,7 @@
  */
 
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
 
 android {
@@ -40,7 +38,8 @@ android {
 }
 
 dependencies {
-    compile project(':library')
+    //compile project(':library')
+    implementation "com.github.stasbar:Android-Prompter:v1.0.0"
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"

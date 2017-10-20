@@ -14,31 +14,12 @@
  * limitations under the License
  */
 
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+package com.stasbar.prompter
 
-buildscript {
-    ext.kotlin_version = '1.1.51'
-    repositories {
-        google()
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-rc1'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-
+/**
+ * Created by stasbar on 20.10.2017
+ */
+class ValidationException(throwable: Throwable) : Exception(throwable) {
+    override val message: String?
+        get() = "Validation failed\n${super.message}"
 }
-
-
-allprojects {
-    repositories {
-        google()
-        jcenter()
-        maven { url "https://jitpack.io" }
-    }
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
-
