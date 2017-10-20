@@ -64,6 +64,6 @@ allprojects {
 Step 2. Add the dependency
 ```gradle
 dependencies {
-        compile 'com.github.User:Repo:Tag'
+        implementation 'com.github.stasbar:Android-Prompter:1.0.0'
 }
 ```
