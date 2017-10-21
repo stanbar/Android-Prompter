@@ -198,7 +198,7 @@ class Prompter : DialogFragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        // Stop callbacks from the IME since there is no view to process them.
+        // Stop callbacks from the IME since there is no clickView to process them.
         editText?.setOnEditorActionListener(null)
     }
 

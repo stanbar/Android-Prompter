@@ -29,40 +29,42 @@ import android.transition.TransitionInflater
 /**
  * Created by stasbar on 19.10.2017
  */
-class Builder(val view: View) {
+class Builder(val clickView: View) {
     private lateinit var dialog: Prompter
 
     private var currentValue: String? = null
     private var message: String? = null
-    private var title: String = view.context.getString(R.string.enter_new_value)
+    private var title: String = clickView.context.getString(R.string.enter_new_value)
     private var hintMode = false
     private var inputType: Int = InputType.TYPE_NULL
     private var validator: ((String) -> Boolean) = { true }
-    private var failMessage = view.context.getString(R.string.invalid_value)
+    private var failMessage = clickView.context.getString(R.string.invalid_value)
     private var animateOnFail: Boolean = true
     private val onValueChangedListeners: ArrayList<OnChangeListener> = ArrayList()
     private var allowEmpty = false
-
+    private var destinationView : View = clickView
     init {
-
-        view.setOnClickListener { show() }
+        clickView.setOnClickListener { show() }
 
         addOnValueChangeListener {
-            if (view is TextView)
-                view.text = it
+            if (destinationView is TextView)
+                (destinationView as TextView).text = it
         }
         populateWithDefaults()
     }
+    fun showOn(destinationView : TextView){
+        this.destinationView = destinationView
+    }
 
     private fun populateWithDefaults() {
-        view.isFocusable = false
-        view.isFocusableInTouchMode = false
-        if (view is TextView)   // Get type from view inputType
-            view.isCursorVisible = false
+        clickView.isFocusable = false
+        clickView.isFocusableInTouchMode = false
+        if (clickView is TextView)   // Get type from clickView inputType
+            clickView.isCursorVisible = false
 
         message = when {
-            view is TextView && view.hint != null -> view.hint.toString()
-            view.contentDescription != null -> view.contentDescription.toString()
+            clickView is TextView && clickView.hint != null -> clickView.hint.toString()
+            clickView.contentDescription != null -> clickView.contentDescription.toString()
             else -> null
         }
 
@@ -70,7 +72,7 @@ class Builder(val view: View) {
     }
 
     fun title(@StringRes stringRes: Int) = apply {
-        this.title = view.context.getString(stringRes)
+        this.title = clickView.context.getString(stringRes)
     }
 
     fun title(title: String) = apply {
@@ -82,7 +84,7 @@ class Builder(val view: View) {
     }
 
     fun message(@StringRes stringRes: Int) = apply {
-        this.message = view.context.getString(stringRes)
+        this.message = clickView.context.getString(stringRes)
     }
 
 
@@ -132,14 +134,14 @@ class Builder(val view: View) {
 
     private fun show() {
         var text = ""
-        if (view is TextView) {
+        if (clickView is TextView) {
             if (inputType == InputType.TYPE_NULL)
-                inputType = view.inputType
+                inputType = clickView.inputType
             if (currentValue == null)
-                text = view.text.toString()
+                text = clickView.text.toString()
         }
 
-        val transitionName = "${view.id}_prompter_shared_view"
+        val transitionName = "${clickView.id}_prompter_shared_view"
         dialog = Prompter.newInstance(inputType = inputType
                 , title = title
                 , message = message
@@ -153,14 +155,14 @@ class Builder(val view: View) {
                 , failMessage = failMessage
         )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            dialog.sharedElementEnterTransition = TransitionInflater.from(view.context).inflateTransition(android.R.transition.move)
+            dialog.sharedElementEnterTransition = TransitionInflater.from(clickView.context).inflateTransition(android.R.transition.move)
         }
-        ViewCompat.setTransitionName(view, transitionName)
+        ViewCompat.setTransitionName(clickView, transitionName)
 
-        val fragmentManager = (view.context as AppCompatActivity).supportFragmentManager
+        val fragmentManager = (clickView.context as AppCompatActivity).supportFragmentManager
         fragmentManager.beginTransaction()
-                .add(dialog, "${view.id}_prompter")
-                .addSharedElement(view, transitionName)
+                .add(dialog, "${clickView.id}_prompter")
+                .addSharedElement(clickView, transitionName)
                 .commit()
 
     }
