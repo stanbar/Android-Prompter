@@ -22,24 +22,30 @@ import android.text.InputType
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    class Book(var size: Int = 100, var currentPosition : Int = 10)
+    class Book(var size: Int = 100, var currentPosition: Int = 10)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Prompter.with(etPage)
-
+        Prompter.showWithClick(etPage)
 
         val book = Book()
-        Prompter.with(tvPage)
+        Prompter.showWithClick(tvPage)
                 .title("Jump to page")
                 .message("Enter page number")
                 .inputType(InputType.TYPE_CLASS_NUMBER)
                 .hintMode() //Current value will be displayed as hint
-                .validate("Please enter page in range of [1, ${book.size}]"){ it.toInt() in 1..book.size }
+                .validate("Please enter page in range of [1, ${book.size}]") { it.toInt() in 1..book.size }
 
+        val prompter = Prompter.on(tvPage)
+                .title("Jump to page")
+                .validate("Please enter page in range of [1, ${book.size}]") { it.toInt() in 1..book.size }
 
-
+        button1.setOnClickListener { prompter.show() }
+        button2.setOnClickListener { prompter.show() }
+        button3.setOnClickListener { prompter.show() }
+        container.setOnClickListener { prompter.show() }
 
 
     }

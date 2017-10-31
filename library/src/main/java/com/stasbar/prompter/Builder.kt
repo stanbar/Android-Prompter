@@ -16,95 +16,63 @@
 
 package com.stasbar.prompter
 
+import android.content.Context
 import android.support.annotation.StringRes
 import android.support.v7.app.AppCompatActivity
 import android.text.InputType
-import android.view.View
-import android.widget.TextView
-import android.os.Build
-import android.support.v4.view.ViewCompat
-import android.transition.TransitionInflater
-
 
 /**
- * Created by stasbar on 19.10.2017
+ * Created by stasbar on 31.10.2017
  */
-class Builder(val clickView: View) {
-    private lateinit var dialog: Prompter
+abstract class Builder{
 
-    private var currentValue: String? = null
-    private var message: String? = null
-    private var title: String = clickView.context.getString(R.string.enter_new_value)
-    private var hintMode = false
-    private var inputType: Int = InputType.TYPE_NULL
-    private var validator: ((String) -> Boolean) = { true }
-    private var failMessage = clickView.context.getString(R.string.invalid_value)
-    private var animateOnFail: Boolean = true
-    private val onValueChangedListeners: ArrayList<OnChangeListener> = ArrayList()
-    private var allowEmpty = false
-    private var destinationView : View = clickView
-    init {
-        clickView.setOnClickListener { show() }
+    protected abstract val context: Context
+    protected lateinit var dialog: Prompter
+    protected var currentValue: String? = null
+    protected var message: String? = null
+    protected var hintMode = false
+    protected var inputType: Int = InputType.TYPE_NULL
+    protected var validator: ((String) -> Boolean) = { true }
+    protected var title: String? = null
+    protected var failMessage: String? = null
+    protected var animateOnFail: Boolean = true
+    protected val onValueChangedListeners: ArrayList<OnChangeListener> = ArrayList()
+    protected var allowEmpty = false
 
-        addOnValueChangeListener {
-            if (destinationView is TextView)
-                (destinationView as TextView).text = it
-        }
-        populateWithDefaults()
-    }
-    fun showOn(destinationView : TextView){
-        this.destinationView = destinationView
+    open fun title(@StringRes stringRes: Int) = apply {
+        this.title = context.getString(stringRes)
     }
 
-    private fun populateWithDefaults() {
-        clickView.isFocusable = false
-        clickView.isFocusableInTouchMode = false
-        if (clickView is TextView)   // Get type from clickView inputType
-            clickView.isCursorVisible = false
-
-        message = when {
-            clickView is TextView && clickView.hint != null -> clickView.hint.toString()
-            clickView.contentDescription != null -> clickView.contentDescription.toString()
-            else -> null
-        }
-
-
-    }
-
-    fun title(@StringRes stringRes: Int) = apply {
-        this.title = clickView.context.getString(stringRes)
-    }
-
-    fun title(title: String) = apply {
+    open fun title(title: String) = apply {
         this.title = title
     }
 
-    fun message(message: String) = apply {
+    open fun message(message: String) = apply {
         this.message = message
     }
 
-    fun message(@StringRes stringRes: Int) = apply {
-        this.message = clickView.context.getString(stringRes)
+    open fun message(@StringRes stringRes: Int) = apply {
+        this.message = context.getString(stringRes)
     }
 
 
-    fun inputType(inputType: Int) = apply {
+    open fun inputType(inputType: Int) = apply {
         this.inputType = inputType
     }
 
-    fun hintMode() = apply { this.hintMode = true }
+    open fun hintMode() = apply { this.hintMode = true }
 
-    fun allowEmpty() = apply { this.allowEmpty = true }
+    open fun allowEmpty() = apply { this.allowEmpty = true }
 
-    fun currentValue(currentValue: String) = apply {
+    open fun currentValue(currentValue: String) = apply {
         this.currentValue = currentValue
     }
 
-    fun currentValue(currentValue: Number) = apply {
+    open fun currentValue(currentValue: Number) = apply {
         this.currentValue = currentValue.toString()
     }
 
-    fun addOnValueChangeListener(onValueChanged: (String) -> Unit) = apply {
+    open fun addOnValueChangeListener(onValueChanged: (String) -> Unit) = apply {
         onValueChangedListeners.add(object : OnChangeListener {
             override fun onChangeListener(newValue: String) {
                 onValueChanged(newValue)
@@ -112,7 +80,7 @@ class Builder(val clickView: View) {
         })
     }
 
-    fun setOnValueChangeListener(onValueChanged: (String) -> Unit) = apply {
+    open fun setOnValueChangeListener(onValueChanged: (String) -> Unit) = apply {
         onValueChangedListeners.clear()
         onValueChangedListeners.add(object : OnChangeListener {
             override fun onChangeListener(newValue: String) {
@@ -122,31 +90,26 @@ class Builder(val clickView: View) {
     }
 
 
-    fun validate(failMessage: String, validator: (String) -> Boolean) = apply {
+    open fun validate(failMessage: String, validator: (String) -> Boolean) = apply {
         this.validator = validator
         this.failMessage = failMessage
     }
 
-    fun validate(validator: (String) -> Boolean) = apply {
+    open fun validate(validator: (String) -> Boolean) = apply {
         this.validator = validator
     }
 
 
-    private fun show() {
-        var text = ""
-        if (clickView is TextView) {
-            if (inputType == InputType.TYPE_NULL)
-                inputType = clickView.inputType
-            if (currentValue == null)
-                text = clickView.text.toString()
-        }
+    protected open fun show() {
+        val inputType = if (inputType == InputType.TYPE_NULL) figureDefaultInputType() else this.inputType
+        val currentValue: String = if (currentValue == null) figureCurrentValue() else this.currentValue!!
+        val title: String = if (title == null) context.getString(R.string.invalid_value) else title!!
+        val failMessage: String = if (failMessage == null) context.getString(R.string.invalid_value) else failMessage!!
 
-        val transitionName = "${clickView.id}_prompter_shared_view"
         dialog = Prompter.newInstance(inputType = inputType
                 , title = title
                 , message = message
-                , currentValue = text
-                , transitionName = transitionName
+                , currentValue = currentValue
                 , hintMode = hintMode
                 , onValueChangedListeners = onValueChangedListeners
                 , validator = validator
@@ -154,18 +117,16 @@ class Builder(val clickView: View) {
                 , allowEmpty = allowEmpty
                 , failMessage = failMessage
         )
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            dialog.sharedElementEnterTransition = TransitionInflater.from(clickView.context).inflateTransition(android.R.transition.move)
-        }
-        ViewCompat.setTransitionName(clickView, transitionName)
 
-        val fragmentManager = (clickView.context as AppCompatActivity).supportFragmentManager
+        val fragmentManager = (context as AppCompatActivity).supportFragmentManager
         fragmentManager.beginTransaction()
-                .add(dialog, "${clickView.id}_prompter")
-                .addSharedElement(clickView, transitionName)
+                .add(dialog, "prompter")
                 .commit()
 
     }
 
+
+    protected abstract fun figureCurrentValue(): String
+    protected abstract fun figureDefaultInputType(): Int
 
 }

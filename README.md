@@ -4,7 +4,7 @@ Android library that facilitates input validation
 Simple wrap your view with 
 
 ```kotlin
-Prompter.with(yourView)
+Prompter.showWithClick(yourView)
 ```
 and enjoy nice UX flow
 
@@ -12,7 +12,7 @@ and enjoy nice UX flow
 
 All properties like inputType, hint/text, message or title will be taken from `yourView` or you can specify them manualy with
 ```kotlin
-Prompter.with(etPage)
+Prompter.showWithClick(etPage)
         .title("Jump to page")
         .message("Enter page you would like to jump to")
         .inputType(InputType.TYPE_CLASS_NUMBER)
@@ -26,7 +26,7 @@ By default empty values won't pass validation process but you can change this wi
                 
 You can even customize whole callback method (callbacks are called only when validation pass or is not specified)
 ```kotlin
-Prompter.with(etPage)
+Prompter.showWithClick(etPage)
         .setOnValueChangeListener {
             if (it.toInt() in 0..100)
                 etPage.setText(newInt.toString())
@@ -36,7 +36,7 @@ Prompter.with(etPage)
 It's worth to mention that setOnValueChangeListener overrides all listeners whereas addOnValueChangeListener appends to current list of listeners.
 So:
 ```kotlin
-Prompter.with(etDouble)
+Prompter.showWithClick(etDouble)
         .addOnValueChangeListener {
             Log.d(TAG, "A")
         }
@@ -47,9 +47,21 @@ Prompter.with(etDouble)
             Log.d(TAG, "C")
         }
 ```
-will print 
+will print only
 `D/Prompter: C`
 
+Sometimes you may want specify different View that prompt the dialog. In this case use `Prompter.on()` and trigger manually `.show()`
+```kotlin
+val prompter = Prompter.on(tvPage)
+        .title("Jump to page")
+        .validate("Please enter page in range of [1, ${book.size}]") { it.toInt() in 1..book.size }
+        
+button1.setOnClickListener { prompter.show() }
+button2.setOnClickListener { prompter.show() }
+button3.setOnClickListener { prompter.show() }
+container.setOnClickListener { prompter.show() }
+
+```
 
 Usage:
 Step 1. Add the JitPack repository to your root build.gradle
@@ -64,6 +76,6 @@ allprojects {
 Step 2. Add the dependency
 ```gradle
 dependencies {
-        implementation 'com.github.stasbar:Android-Prompter:1.0.0'
+        implementation 'com.github.stasbar:Android-Prompter:2.0.0'
 }
 ```

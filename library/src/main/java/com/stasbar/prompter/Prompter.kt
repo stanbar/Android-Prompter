@@ -19,23 +19,24 @@ package com.stasbar.prompter
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Dialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
+import android.support.annotation.StringRes
 import android.support.v4.app.DialogFragment
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AlertDialog
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.AppCompatEditText
 import android.text.Editable
 import android.text.InputType
-import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
-import android.widget.NumberPicker
 import android.widget.TextView
 
 /**
@@ -84,7 +85,14 @@ class Prompter : DialogFragment() {
 
         val dialog = AlertDialog.Builder(context)
                 .setNegativeButton(R.string.cancel) { _, _ -> dismiss() }
-                .setPositiveButton(getString(R.string.set)) { _, _ -> validateAnd { commit(); dismiss(); } }
+                .setPositiveButton(getString(R.string.set)) { _, _ ->
+                    validateAnd {
+                        commit()
+                        dismiss()
+                    }
+
+                }
+
                 .setTitle(title)
                 .create()
         message?.let { dialog.setMessage(message) }
@@ -216,8 +224,13 @@ class Prompter : DialogFragment() {
         private val ALLOW_EMPTY = "allow_empty"
 
         @JvmStatic
-        fun with(view: View): Builder {
-            return Builder(view)
+        fun showWithClick(view: View): AdaptiveBuilder {
+            return AdaptiveBuilder(view)
+        }
+
+        @JvmStatic
+        fun on(destination: TextView): ManualBuilder {
+            return ManualBuilder(destination)
         }
 
         internal fun newInstance(inputType: Int
@@ -250,4 +263,6 @@ class Prompter : DialogFragment() {
         }
 
     }
+
+
 }
