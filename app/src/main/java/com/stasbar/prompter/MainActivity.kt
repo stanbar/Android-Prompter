@@ -42,9 +42,6 @@ class MainActivity : AppCompatActivity() {
                 .title("Jump to page")
                 .validate("Please enter page in range of [1, ${book.size}]") { it.toInt() in 1..book.size }
 
-        button1.setOnClickListener { prompter.show() }
-        button2.setOnClickListener { prompter.show() }
-        button3.setOnClickListener { prompter.show() }
         container.setOnClickListener { prompter.show() }
 
 
