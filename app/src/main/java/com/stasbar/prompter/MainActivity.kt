@@ -28,17 +28,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Prompter.showWithClick(etPage)
+        Prompter.showWithClick(etPage, this)
 
         val book = Book()
-        Prompter.showWithClick(tvPage)
+        Prompter.showWithClick(tvPage, this)
                 .title("Jump to page")
                 .message("Enter page number")
                 .inputType(InputType.TYPE_CLASS_NUMBER)
                 .hintMode() //Current value will be displayed as hint
                 .validate("Please enter page in range of [1, ${book.size}]") { it.toInt() in 1..book.size }
 
-        val prompter = Prompter.on(tvPage)
+        val prompter = Prompter.on(tvPage, this)
                 .title("Jump to page")
                 .validate("Please enter page in range of [1, ${book.size}]") { it.toInt() in 1..book.size }
 

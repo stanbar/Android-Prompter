@@ -18,13 +18,13 @@ package com.stasbar.prompter
 
 import android.content.Context
 import android.support.annotation.StringRes
+import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
 
 /**
  * Created by stasbar on 31.10.2017
  */
-class ManualBuilder internal constructor(private val destinationView: TextView) : Builder() {
-    override val context: Context = destinationView.context
+class ManualBuilder internal constructor(activity: AppCompatActivity, private val destinationView: TextView) : Builder(activity) {
 
     init {
         addOnValueChangeListener {
@@ -33,7 +33,7 @@ class ManualBuilder internal constructor(private val destinationView: TextView) 
     }
 
     override fun title(@StringRes stringRes: Int) = apply {
-        this.title = context.getString(stringRes)
+        this.title = activity.getString(stringRes)
     }
 
     override fun title(title: String) = apply {
@@ -45,7 +45,7 @@ class ManualBuilder internal constructor(private val destinationView: TextView) 
     }
 
     override fun message(@StringRes stringRes: Int) = apply {
-        this.message = context.getString(stringRes)
+        this.message = activity.getString(stringRes)
     }
 
 

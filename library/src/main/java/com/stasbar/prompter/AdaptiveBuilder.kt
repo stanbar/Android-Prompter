@@ -17,6 +17,7 @@
 package com.stasbar.prompter
 
 import android.content.Context
+import android.support.v7.app.AppCompatActivity
 import android.text.InputType
 import android.view.View
 import android.widget.TextView
@@ -24,9 +25,8 @@ import android.widget.TextView
 /**
  * Created by stasbar on 31.10.2017
  */
-class AdaptiveBuilder internal constructor(val clickView: View) : Builder() {
+class AdaptiveBuilder internal constructor(activity : AppCompatActivity, val clickView: View) : Builder(activity) {
     private var destinationView: TextView? = null
-    override val context: Context = clickView.context
 
     init {
         if (clickView is TextView)

@@ -224,13 +224,13 @@ class Prompter : DialogFragment() {
         private val ALLOW_EMPTY = "allow_empty"
 
         @JvmStatic
-        fun showWithClick(view: View): AdaptiveBuilder {
-            return AdaptiveBuilder(view)
+        fun showWithClick(view: View, activity: AppCompatActivity): AdaptiveBuilder {
+            return AdaptiveBuilder(activity, view)
         }
 
         @JvmStatic
-        fun on(destination: TextView): ManualBuilder {
-            return ManualBuilder(destination)
+        fun on(destination: TextView, activity: AppCompatActivity): ManualBuilder {
+            return ManualBuilder(activity, destination)
         }
 
         internal fun newInstance(inputType: Int

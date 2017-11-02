@@ -4,7 +4,7 @@ Android library that facilitates input validation
 Simple wrap your view with 
 
 ```kotlin
-Prompter.showWithClick(yourView)
+Prompter.showWithClick(yourView, this)
 ```
 and enjoy nice UX flow
 
@@ -12,7 +12,7 @@ and enjoy nice UX flow
 
 All properties like inputType, hint/text, message or title will be taken from `yourView` or you can specify them manualy with
 ```kotlin
-Prompter.showWithClick(etPage)
+Prompter.showWithClick(etPage, this)
         .title("Jump to page")
         .message("Enter page you would like to jump to")
         .inputType(InputType.TYPE_CLASS_NUMBER)
@@ -26,7 +26,7 @@ By default empty values won't pass validation process but you can change this wi
                 
 You can even customize whole callback method (callbacks are called only when validation pass or is not specified)
 ```kotlin
-Prompter.showWithClick(etPage)
+Prompter.showWithClick(etPage, this)
         .setOnValueChangeListener {
             if (it.toInt() in 0..100)
                 etPage.setText(newInt.toString())
@@ -36,7 +36,7 @@ Prompter.showWithClick(etPage)
 It's worth to mention that setOnValueChangeListener overrides all listeners whereas addOnValueChangeListener appends to current list of listeners.
 So:
 ```kotlin
-Prompter.showWithClick(etDouble)
+Prompter.showWithClick(etDouble, this)
         .addOnValueChangeListener {
             Log.d(TAG, "A")
         }
@@ -52,7 +52,7 @@ will print only
 
 Sometimes you may want specify different View that prompt the dialog. In this case use `Prompter.on()` and trigger manually `.show()`
 ```kotlin
-val prompter = Prompter.on(tvPage)
+val prompter = Prompter.on(tvPage, this)
         .title("Jump to page")
         .validate("Please enter page in range of [1, ${book.size}]") { it.toInt() in 1..book.size }
         

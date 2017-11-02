@@ -16,6 +16,7 @@
 
 package com.stasbar.prompter
 
+import android.app.Activity
 import android.content.Context
 import android.support.annotation.StringRes
 import android.support.v7.app.AppCompatActivity
@@ -24,9 +25,7 @@ import android.text.InputType
 /**
  * Created by stasbar on 31.10.2017
  */
-abstract class Builder{
-
-    protected abstract val context: Context
+abstract class Builder(val activity: AppCompatActivity) {
     protected lateinit var dialog: Prompter
     protected var currentValue: String? = null
     protected var message: String? = null
@@ -40,7 +39,7 @@ abstract class Builder{
     protected var allowEmpty = false
 
     open fun title(@StringRes stringRes: Int) = apply {
-        this.title = context.getString(stringRes)
+        this.title = activity.getString(stringRes)
     }
 
     open fun title(title: String) = apply {
@@ -52,7 +51,7 @@ abstract class Builder{
     }
 
     open fun message(@StringRes stringRes: Int) = apply {
-        this.message = context.getString(stringRes)
+        this.message = activity.getString(stringRes)
     }
 
 
@@ -103,8 +102,8 @@ abstract class Builder{
     protected open fun show() {
         val inputType = if (inputType == InputType.TYPE_NULL) figureDefaultInputType() else this.inputType
         val currentValue: String = if (currentValue == null) figureCurrentValue() else this.currentValue!!
-        val title: String = if (title == null) context.getString(R.string.invalid_value) else title!!
-        val failMessage: String = if (failMessage == null) context.getString(R.string.invalid_value) else failMessage!!
+        val title: String = if (title == null) activity.getString(R.string.invalid_value) else title!!
+        val failMessage: String = if (failMessage == null) activity.getString(R.string.invalid_value) else failMessage!!
 
         dialog = Prompter.newInstance(inputType = inputType
                 , title = title
@@ -118,7 +117,7 @@ abstract class Builder{
                 , failMessage = failMessage
         )
 
-        val fragmentManager = (context as AppCompatActivity).supportFragmentManager
+        val fragmentManager = activity.supportFragmentManager
         fragmentManager.beginTransaction()
                 .add(dialog, "prompter")
                 .commit()
