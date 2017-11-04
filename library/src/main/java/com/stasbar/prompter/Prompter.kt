@@ -26,6 +26,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.v4.app.DialogFragment
+import android.support.v4.app.FragmentManager
 import android.support.v4.view.ViewCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
@@ -224,13 +225,13 @@ class Prompter : DialogFragment() {
         private val ALLOW_EMPTY = "allow_empty"
 
         @JvmStatic
-        fun showWithClick(view: View, activity: AppCompatActivity): AdaptiveBuilder {
-            return AdaptiveBuilder(activity, view)
+        fun showWithClick(view: View, fragmentManager: FragmentManager): AdaptiveBuilder {
+            return AdaptiveBuilder(fragmentManager, view)
         }
 
         @JvmStatic
-        fun on(destination: TextView, activity: AppCompatActivity): ManualBuilder {
-            return ManualBuilder(activity, destination)
+        fun on(destination: TextView, fragmentManager: FragmentManager): ManualBuilder {
+            return ManualBuilder(fragmentManager, destination)
         }
 
         internal fun newInstance(inputType: Int

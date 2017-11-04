@@ -16,16 +16,17 @@
 
 package com.stasbar.prompter
 
-import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.support.annotation.StringRes
+import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
 import android.text.InputType
 
 /**
  * Created by stasbar on 31.10.2017
  */
-abstract class Builder(val activity: AppCompatActivity) {
+abstract class Builder(val fragmentManager: FragmentManager) {
     protected lateinit var dialog: Prompter
     protected var currentValue: String? = null
     protected var message: String? = null
@@ -37,9 +38,10 @@ abstract class Builder(val activity: AppCompatActivity) {
     protected var animateOnFail: Boolean = true
     protected val onValueChangedListeners: ArrayList<OnChangeListener> = ArrayList()
     protected var allowEmpty = false
+    abstract fun getContext() : Context
 
     open fun title(@StringRes stringRes: Int) = apply {
-        this.title = activity.getString(stringRes)
+        this.title = getContext().getString(stringRes)
     }
 
     open fun title(title: String) = apply {
@@ -51,7 +53,7 @@ abstract class Builder(val activity: AppCompatActivity) {
     }
 
     open fun message(@StringRes stringRes: Int) = apply {
-        this.message = activity.getString(stringRes)
+        this.message = getContext().getString(stringRes)
     }
 
 
@@ -102,8 +104,8 @@ abstract class Builder(val activity: AppCompatActivity) {
     protected open fun show() {
         val inputType = if (inputType == InputType.TYPE_NULL) figureDefaultInputType() else this.inputType
         val currentValue: String = if (currentValue == null) figureCurrentValue() else this.currentValue!!
-        val title: String = if (title == null) activity.getString(R.string.invalid_value) else title!!
-        val failMessage: String = if (failMessage == null) activity.getString(R.string.invalid_value) else failMessage!!
+        val title: String = if (title == null) getContext().getString(R.string.invalid_value) else title!!
+        val failMessage: String = if (failMessage == null) getContext().getString(R.string.invalid_value) else failMessage!!
 
         dialog = Prompter.newInstance(inputType = inputType
                 , title = title
@@ -117,10 +119,7 @@ abstract class Builder(val activity: AppCompatActivity) {
                 , failMessage = failMessage
         )
 
-        val fragmentManager = activity.supportFragmentManager
-        fragmentManager.beginTransaction()
-                .add(dialog, "prompter")
-                .commit()
+        dialog.show(fragmentManager,"prompter")
 
     }
 

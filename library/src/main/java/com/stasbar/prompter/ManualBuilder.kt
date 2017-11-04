@@ -16,15 +16,18 @@
 
 package com.stasbar.prompter
 
+import android.app.Activity
 import android.content.Context
 import android.support.annotation.StringRes
+import android.support.v4.app.FragmentManager
 import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
 
 /**
  * Created by stasbar on 31.10.2017
  */
-class ManualBuilder internal constructor(activity: AppCompatActivity, private val destinationView: TextView) : Builder(activity) {
+class ManualBuilder internal constructor(fragmentManager: FragmentManager, private val destinationView: TextView) : Builder(fragmentManager) {
+    override fun getContext(): Context = destinationView.context
 
     init {
         addOnValueChangeListener {
@@ -33,7 +36,7 @@ class ManualBuilder internal constructor(activity: AppCompatActivity, private va
     }
 
     override fun title(@StringRes stringRes: Int) = apply {
-        this.title = activity.getString(stringRes)
+        this.title = getContext().getString(stringRes)
     }
 
     override fun title(title: String) = apply {
@@ -45,7 +48,7 @@ class ManualBuilder internal constructor(activity: AppCompatActivity, private va
     }
 
     override fun message(@StringRes stringRes: Int) = apply {
-        this.message = activity.getString(stringRes)
+        this.message = getContext().getString(stringRes)
     }
 
 
