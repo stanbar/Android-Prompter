@@ -104,7 +104,7 @@ abstract class Builder(val fragmentManager: FragmentManager) {
     protected open fun show() {
         val inputType = if (inputType == InputType.TYPE_NULL) figureDefaultInputType() else this.inputType
         val currentValue: String = if (currentValue == null) figureCurrentValue() else this.currentValue!!
-        val title: String = if (title == null) getContext().getString(R.string.invalid_value) else title!!
+        val title: String = if (title == null) getContext().getString(R.string.enter_new_value) else title!!
         val failMessage: String = if (failMessage == null) getContext().getString(R.string.invalid_value) else failMessage!!
 
         dialog = Prompter.newInstance(inputType = inputType

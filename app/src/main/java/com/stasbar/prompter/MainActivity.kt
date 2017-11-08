@@ -32,14 +32,13 @@ class MainActivity : AppCompatActivity() {
 
         val book = Book()
         Prompter.showWithClick(tvPage, supportFragmentManager)
-                .title("Jump to page")
                 .message("Enter page number")
                 .inputType(InputType.TYPE_CLASS_NUMBER)
                 .hintMode() //Current value will be displayed as hint
                 .validate("Please enter page in range of [1, ${book.size}]") { it.toInt() in 1..book.size }
 
         val prompter = Prompter.on(tvPage, supportFragmentManager)
-                .title("Jump to page")
+                .message("Enter page number")
                 .validate("Please enter page in range of [1, ${book.size}]") { it.toInt() in 1..book.size }
 
         container.setOnClickListener { prompter.show() }
