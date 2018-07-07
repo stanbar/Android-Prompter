@@ -56,6 +56,7 @@ class Prompter : DialogFragment() {
     private lateinit var title: String
     private var allowEmpty = false
     private var hintMode = false
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         // As long as the label box exists, save its state.
@@ -65,44 +66,43 @@ class Prompter : DialogFragment() {
     }
 
     private fun dispatchArguments() {
-        inputType = arguments.getInt(INPUT_TYPE)
-        animateOnFail = arguments.getBoolean(ANIMATE_ON_FAIL)
-        failMessage = arguments.getString(FAIL_MESSAGE)
-        previousValue = arguments.getString(CURRENT_VALUE)
-        title = arguments.getString(TITLE_STRING)
-        message = arguments.getString(MESSAGE_STRING, null)
-        allowEmpty = arguments.getBoolean(ALLOW_EMPTY)
-        hintMode = arguments.getBoolean(HINT_MODE)
+        with(arguments!!) {
+            inputType = getInt(INPUT_TYPE)
+            animateOnFail = getBoolean(ANIMATE_ON_FAIL)
+            failMessage = getString(FAIL_MESSAGE)
+            previousValue = getString(CURRENT_VALUE)
+            title = getString(TITLE_STRING)
+            message = getString(MESSAGE_STRING, null)
+            allowEmpty = getBoolean(ALLOW_EMPTY)
+            hintMode = getBoolean(HINT_MODE)
+        }
     }
 
     @SuppressLint("RestrictedApi")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         dispatchArguments()
-
         val text = if (savedInstanceState != null)
             savedInstanceState.getString(KEY_LABEL)
         else
             previousValue
 
-        val dialog = AlertDialog.Builder(context)
+        val dialog = AlertDialog.Builder(context!!)
                 .setNegativeButton(R.string.cancel) { _, _ -> dismiss() }
                 .setPositiveButton(getString(R.string.set)) { _, _ ->
                     validateAnd {
                         commit()
                         dismiss()
                     }
-
                 }
-
                 .setTitle(title)
                 .create()
         message?.let { dialog.setMessage(message) }
-        val colorControlActivated = ThemeUtils.resolveColor(context, R.attr.colorControlActivated);
-        val colorControlNormal = ThemeUtils.resolveColor(context, R.attr.colorControlNormal);
+        val colorControlActivated = ThemeUtils.resolveColor(context!!, R.attr.colorControlActivated);
+        val colorControlNormal = ThemeUtils.resolveColor(context!!, R.attr.colorControlNormal);
 
         editText = AppCompatEditText(context)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            ViewCompat.setTransitionName(editText!!, arguments.getString(TRANSITION_NAME))
+            ViewCompat.setTransitionName(editText!!, arguments?.getString(TRANSITION_NAME))
 
         editText!!.supportBackgroundTintList = ColorStateList(
                 arrayOf(intArrayOf(android.R.attr.state_activated), intArrayOf()),
@@ -211,7 +211,6 @@ class Prompter : DialogFragment() {
         editText?.setOnEditorActionListener(null)
     }
 
-
     companion object {
         private val KEY_LABEL = "label"
         private val TITLE_STRING = "title_string"
@@ -244,23 +243,24 @@ class Prompter : DialogFragment() {
                                  , animateOnFail: Boolean = true
                                  , failMessage: String
                                  , allowEmpty: Boolean = false
-                                 , validator: (String) -> Boolean)
-                : Prompter {
-            val args = Bundle()
-            args.putInt(INPUT_TYPE, inputType)
-            args.putString(TITLE_STRING, title)
-            args.putString(MESSAGE_STRING, message)
-            args.putString(CURRENT_VALUE, currentValue)
-            args.putString(TRANSITION_NAME, transitionName)
-            args.putBoolean(HINT_MODE, hintMode)
-            args.putBoolean(ANIMATE_ON_FAIL, animateOnFail)
-            args.putString(FAIL_MESSAGE, failMessage)
-            args.putBoolean(ALLOW_EMPTY, allowEmpty)
-            val fragment = Prompter()
-            fragment.arguments = args
-            fragment.onValueChangedListeners = onValueChangedListeners
-            fragment.validator = validator
-            return fragment
+                                 , validator: (String) -> Boolean): Prompter {
+            val args = Bundle().apply {
+                putInt(INPUT_TYPE, inputType)
+                putString(TITLE_STRING, title)
+                putString(MESSAGE_STRING, message)
+                putString(CURRENT_VALUE, currentValue)
+                putString(TRANSITION_NAME, transitionName)
+                putBoolean(HINT_MODE, hintMode)
+                putBoolean(ANIMATE_ON_FAIL, animateOnFail)
+                putString(FAIL_MESSAGE, failMessage)
+                putBoolean(ALLOW_EMPTY, allowEmpty)
+            }
+            return Prompter().apply {
+                arguments = args
+                this.onValueChangedListeners = onValueChangedListeners
+                this.validator = validator
+            }
+
         }
 
     }

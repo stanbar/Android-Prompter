@@ -54,7 +54,9 @@ Sometimes you may want specify different View that prompt the dialog. In this ca
 ```kotlin
 val prompter = Prompter.on(tvPage, supportFragmentManager)
         .title("Jump to page")
-        .validate("Please enter page in range of [1, ${book.size}]") { it.toInt() in 1..book.size }
+        .validate("Please enter page in range of [1, ${book.size}]") {
+            it.toInt() in 1..book.size
+        }
         
 button1.setOnClickListener { prompter.show() }
 button2.setOnClickListener { prompter.show() }
@@ -76,6 +78,31 @@ allprojects {
 Step 2. Add the dependency
 ```gradle
 dependencies {
-        implementation 'com.github.stasbar:Android-Prompter:2.0.0'
+        implementation 'com.github.stasbar:android-prompter:2.3.0'
 }
+```
+
+### Licenses
+```
+Copyright 2017 Stanislaw stasbar Baranski
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+   http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+
+
+         __             __
+   _____/ /_____ ______/ /_  ____ ______
+  / ___/ __/ __ `/ ___/ __ \/ __ `/ ___/
+ (__  ) /_/ /_/ (__  ) /_/ / /_/ / /
+/____/\__/\__,_/____/_.___/\__,_/_/
+           taxledger@stasbar.com
 ```
