@@ -1,6 +1,6 @@
 # Android-Prompter
 Android library that facilitates input validation
-
+[![](https://jitpack.io/v/stasbar/Android-Prompter.svg)](https://jitpack.io/#stasbar/Android-Prompter)
 Simple wrap your view with 
 
 ```kotlin
@@ -65,7 +65,9 @@ container.setOnClickListener { prompter.show() }
 
 ```
 
-Usage:
+## Usage:
+[![](https://jitpack.io/v/stasbar/Android-Prompter.svg)](https://jitpack.io/#stasbar/Android-Prompter)
+#### Gradle
 Step 1. Add the JitPack repository to your root build.gradle
 ```gradle
 allprojects {
@@ -78,9 +80,10 @@ allprojects {
 Step 2. Add the dependency
 ```gradle
 dependencies {
-        implementation 'com.github.stasbar:android-prompter:2.3.0'
+        implementation 'com.github.stasbar:android-prompter:<enter_here_version>'
 }
 ```
+
 
 ### Licenses
 ```
