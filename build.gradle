@@ -19,29 +19,46 @@
  *   / ___/ __/ __ `/ ___/ __ \/ __ `/ ___/
  *  (__  ) /_/ /_/ (__  ) /_/ / /_/ / /
  * /____/\__/\__,_/____/_.___/\__,_/_/
- *            taxledger@stasbar.com
+ *            stachu@stasbar.com
  */
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.2.51'
+    ext {
+        // SDK and tools
+        compileSdkVersion = 28
+        targetSdkVersion = 28
+        minSdkVersion = 21
+        minTvSdkVersion = 21 // TV was introduced with Lollipop, min SDK should be 21.
+        versionCode = 6
+        versionName = "3.0"
+
+        // App dependencies
+        kotlinVersion = '1.2.60'
+    }
+
     repositories {
-        google()
         jcenter()
+        mavenCentral()
+        google()
+        maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.3'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "com.android.tools.build:gradle:3.2.0-beta05"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
     }
 }
 
 allprojects {
     repositories {
-        google()
         jcenter()
+        google()
+        mavenCentral()
+        maven { url 'https://maven.fabric.io/public' }
         maven { url "https://jitpack.io" }
+        maven { url "http://dl.bintray.com/jjhesk/maven" }
     }
 }
 

@@ -16,12 +16,10 @@
 
 package com.stasbar.prompter
 
-import android.app.Activity
 import android.content.Context
-import android.support.annotation.StringRes
-import android.support.v4.app.FragmentManager
-import android.support.v7.app.AppCompatActivity
 import android.widget.TextView
+import androidx.annotation.StringRes
+import androidx.fragment.app.FragmentManager
 
 /**
  * Created by stasbar on 31.10.2017

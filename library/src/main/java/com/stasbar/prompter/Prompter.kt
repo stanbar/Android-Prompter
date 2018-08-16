@@ -19,18 +19,10 @@ package com.stasbar.prompter
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.content.res.ColorStateList
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.StringRes
-import android.support.v4.app.DialogFragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.view.ViewCompat
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.AppCompatEditText
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
@@ -39,6 +31,10 @@ import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.view.ViewCompat
+import androidx.fragment.app.DialogFragment
 
 /**
  * Created by stasbar on 19.10.2017
@@ -224,12 +220,12 @@ class Prompter : DialogFragment() {
         private val ALLOW_EMPTY = "allow_empty"
 
         @JvmStatic
-        fun showWithClick(view: View, fragmentManager: FragmentManager): AdaptiveBuilder {
+        fun showWithClick(view: View, fragmentManager: androidx.fragment.app.FragmentManager): AdaptiveBuilder {
             return AdaptiveBuilder(fragmentManager, view)
         }
 
         @JvmStatic
-        fun on(destination: TextView, fragmentManager: FragmentManager): ManualBuilder {
+        fun on(destination: TextView, fragmentManager: androidx.fragment.app.FragmentManager): ManualBuilder {
             return ManualBuilder(fragmentManager, destination)
         }
 
@@ -244,6 +240,7 @@ class Prompter : DialogFragment() {
                                  , failMessage: String
                                  , allowEmpty: Boolean = false
                                  , validator: (String) -> Boolean): Prompter {
+
             val args = Bundle().apply {
                 putInt(INPUT_TYPE, inputType)
                 putString(TITLE_STRING, title)
@@ -260,10 +257,6 @@ class Prompter : DialogFragment() {
                 this.onValueChangedListeners = onValueChangedListeners
                 this.validator = validator
             }
-
         }
-
     }
-
-
 }

@@ -19,12 +19,12 @@
  *   / ___/ __/ __ `/ ___/ __ \/ __ `/ ___/
  *  (__  ) /_/ /_/ (__  ) /_/ / /_/ / /
  * /____/\__/\__,_/____/_.___/\__,_/_/
- *            taxledger@stasbar.com
+ *            stachu@stasbar.com
  */
 
 package com.stasbar.prompter
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
 import kotlinx.android.synthetic.main.activity_main.*

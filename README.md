@@ -80,7 +80,7 @@ allprojects {
 Step 2. Add the dependency
 ```gradle
 dependencies {
-        implementation 'com.github.stasbar:android-prompter:<enter_here_version>'
+        implementation 'com.github.stasbar:android-prompter:<enter_version_here>'
 }
 ```
 
@@ -107,5 +107,5 @@ limitations under the License.
   / ___/ __/ __ `/ ___/ __ \/ __ `/ ___/
  (__  ) /_/ /_/ (__  ) /_/ / /_/ / /
 /____/\__/\__,_/____/_.___/\__,_/_/
-           taxledger@stasbar.com
+           stachu@stasbar.com
 ```

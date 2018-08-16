@@ -19,7 +19,7 @@
  *   / ___/ __/ __ `/ ___/ __ \/ __ `/ ___/
  *  (__  ) /_/ /_/ (__  ) /_/ / /_/ / /
  * /____/\__/\__,_/____/_.___/\__,_/_/
- *            taxledger@stasbar.com
+ *            stachu@stasbar.com
  */
 
 apply plugin: 'com.android.library'
@@ -29,17 +29,15 @@ apply plugin: 'com.github.dcendents.android-maven'
 group='com.github.stasbar'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
-
+    compileSdkVersion 28
 
     defaultConfig {
-        minSdkVersion 17
-        targetSdkVersion 27
-        versionCode 5
-        versionName "2.4"
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
+        versionCode rootProject.versionCode
+        versionName rootProject.versionName
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
     }
 
@@ -54,10 +52,10 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
+    implementation 'androidx.appcompat:appcompat:1.0.0-rc01'
 
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
 }

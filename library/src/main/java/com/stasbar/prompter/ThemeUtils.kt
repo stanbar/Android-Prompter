@@ -18,10 +18,10 @@ package com.stasbar.prompter
 
 import android.content.Context
 import android.content.res.TypedArray
-import android.support.annotation.AttrRes
+import androidx.annotation.AttrRes
 import android.graphics.drawable.Drawable
 import android.graphics.Color
-import android.support.annotation.ColorInt
+import androidx.annotation.ColorInt
 
 
 /**
