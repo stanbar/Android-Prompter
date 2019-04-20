@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
         val book = Book()
         Prompter.showWithClick(tvPage, supportFragmentManager)
                 .message("Enter page number")
+                .showValue { book.currentPosition.toString() }
                 .inputType(InputType.TYPE_CLASS_NUMBER)
                 .hintMode() //Current value will be displayed as hint
                 .validate("Please enter page in range of [1, ${book.size}]") {

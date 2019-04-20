@@ -53,7 +53,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
-    implementation 'androidx.appcompat:appcompat:1.0.0-rc01'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha04'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'

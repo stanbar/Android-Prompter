@@ -31,6 +31,7 @@ abstract class Builder(val fragmentManager: FragmentManager) {
     protected var hintMode = false
     protected var inputType: Int = InputType.TYPE_NULL
     protected var validator: ((String) -> Boolean) = { true }
+    protected var showValueResolver: (() -> String)? = null
     protected var title: String? = null
     protected var failMessage: String? = null
     protected var animateOnFail: Boolean = true
@@ -63,12 +64,12 @@ abstract class Builder(val fragmentManager: FragmentManager) {
 
     open fun allowEmpty() = apply { this.allowEmpty = true }
 
-    open fun currentValue(currentValue: String) = apply {
-        this.currentValue = currentValue
+    open fun showValue(valueResolver: () -> String) = apply {
+        this.showValueResolver = valueResolver
     }
 
-    open fun currentValue(currentValue: Number) = apply {
-        this.currentValue = currentValue.toString()
+    open fun currentValue(currentValue: String) = apply {
+        this.currentValue = currentValue
     }
 
     open fun addOnValueChangeListener(onValueChanged: (String) -> Unit) = apply {
@@ -101,7 +102,11 @@ abstract class Builder(val fragmentManager: FragmentManager) {
 
     protected open fun show() {
         val inputType = if (inputType == InputType.TYPE_NULL) figureDefaultInputType() else this.inputType
-        val currentValue: String = if (currentValue == null) figureCurrentValue() else this.currentValue!!
+        val currentValue: String = when{
+            this.showValueResolver != null -> showValueResolver!!()
+            currentValue != null -> this.currentValue!!
+            else -> figureCurrentValue()
+        }
         val title: String = if (title == null) getContext().getString(R.string.enter_new_value) else title!!
         val failMessage: String = if (failMessage == null) getContext().getString(R.string.invalid_value) else failMessage!!
 

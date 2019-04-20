@@ -16,7 +16,7 @@ Prompter.showWithClick(etPage, supportFragmentManager)
         .title("Jump to page")
         .message("Enter page you would like to jump to")
         .inputType(InputType.TYPE_CLASS_NUMBER)
-        .currentValue(book.currentPosition)
+        .showValue { book.currentPosition.toString() } 
         .hintMode() //Current value will be displayed as hint
         .validate("Please enter page in range of [1, ${book.size}]"){ it.toInt() in 1..book.size }
 ```
@@ -87,7 +87,7 @@ dependencies {
 
 ### Licenses
 ```
-Copyright 2017 Stanislaw stasbar Baranski
+Copyright 2017-2019 Stanislaw stasbar Baranski
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
