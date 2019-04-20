@@ -62,10 +62,6 @@ class ManualBuilder internal constructor(fragmentManager: FragmentManager, priva
         this.currentValue = currentValue
     }
 
-    override fun currentValue(currentValue: Number) = apply {
-        this.currentValue = currentValue.toString()
-    }
-
     override fun addOnValueChangeListener(onValueChanged: (String) -> Unit) = apply {
         onValueChangedListeners.add(object : OnChangeListener {
             override fun onChangeListener(newValue: String) {
